@@ -30,7 +30,7 @@ pub use crate::read::IoRead;
 pub struct Deserializer<R> {
     read: R,
     scratch: Vec<u8>,
-    remaining_depth: u8,
+    remaining_depth: usize,
     #[cfg(feature = "float_roundtrip")]
     single_precision: bool,
     #[cfg(feature = "unbounded_depth")]
@@ -53,7 +53,7 @@ where
         Deserializer {
             read,
             scratch: Vec::new(),
-            remaining_depth: 255,
+            remaining_depth: 512,
             #[cfg(feature = "float_roundtrip")]
             single_precision: false,
             #[cfg(feature = "unbounded_depth")]
