@@ -30,7 +30,7 @@ pub use crate::read::IoRead;
 pub struct Deserializer<R> {
     read: R,
     scratch: Vec<u8>,
-    remaining_depth: usize,
+    remaining_depth: u8,
     #[cfg(feature = "float_roundtrip")]
     single_precision: bool,
     #[cfg(feature = "unbounded_depth")]
@@ -53,7 +53,7 @@ where
         Deserializer {
             read,
             scratch: Vec::new(),
-            remaining_depth: 512,
+            remaining_depth: 128,
             #[cfg(feature = "float_roundtrip")]
             single_precision: false,
             #[cfg(feature = "unbounded_depth")]
@@ -1287,9 +1287,9 @@ macro_rules! check_recursion {
     ($this:ident $($body:tt)*) => {
         if_checking_recursion_limit! {
             $this.remaining_depth -= 1;
-            if $this.remaining_depth == 0 {
-                return Err($this.peek_error(ErrorCode::RecursionLimitExceeded));
-            }
+            // if $this.remaining_depth == 0 {
+            //     return Err($this.peek_error(ErrorCode::RecursionLimitExceeded));
+            // }
         }
 
         $this $($body)*
